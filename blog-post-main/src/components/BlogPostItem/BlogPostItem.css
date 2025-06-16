@@ -1,0 +1,31 @@
+.blog-post-item {
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.blog-post-title {
+  text-decoration: none;
+  color: #333333;
+}
+
+.blog-post-title:hover {
+  color: #007bff;
+}
+
+.blog-post-title h2 {
+  font-size: 24px;
+  margin: 0 0 10px 0;
+}
+
+.blog-post-summary {
+  font-size: 16px;
+  color: #666666;
+  margin: 10px 0;
+}
+
+.blog-post-date {
+  font-size: 14px;
+  color: #999999;
+}
