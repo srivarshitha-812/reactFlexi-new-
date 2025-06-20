@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { BlogPostDetailPage, HomePage, BlogPostCreatePage, BlogPostEditPage } from './Routes';
+import Layout from '../../src/components/Layout';
 
 const initialPosts = [
   {
@@ -61,7 +62,7 @@ const App = () => {
   };
 
   return (
-    <div>
+    <Layout>
       <h1 style={{ textAlign: 'center' }}>Blog Posts</h1>
       <div style={{ textAlign: 'center', marginBottom: 24 }}>
         <a href="/create" style={{
@@ -81,7 +82,7 @@ const App = () => {
         <Route path="/create" element={<BlogPostCreatePage onSubmit={handleCreate} />} />
         <Route path="/edit/:id" element={<BlogPostEditPage posts={posts} onSubmit={handleEdit} />} />
       </Routes>
-    </div>
+    </Layout>
   );
 };
 
