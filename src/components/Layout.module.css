@@ -1,0 +1,51 @@
+/* Layout.module.css */
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Roboto', Arial, sans-serif;
+  background: #f8fafc;
+}
+
+.header {
+  height: 60px;
+  width: 100vw;
+  flex-shrink: 0;
+}
+
+.main {
+  flex: 1 0 auto;
+  max-width: 1200px;
+  margin: 80px auto 0 auto;
+  padding: 20px;
+  width: 100vw;
+  box-sizing: border-box;
+}
+
+.footer {
+  height: 40px;
+  background: #003366;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1200px) {
+  .main {
+    padding: 20px 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    margin-top: 70px;
+    padding: 10px;
+  }
+  .footer {
+    font-size: 14px;
+  }
+}
