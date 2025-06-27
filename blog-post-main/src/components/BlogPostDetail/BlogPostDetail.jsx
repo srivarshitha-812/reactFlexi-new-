@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import DeleteButton from './DeleteButton';
 import ConfirmationDialog from './ConfirmationDialog';
+import CommentList from '../../../../src/components/Comment/CommentList';
+import CommentForm from '../../../../src/components/Comment/CommentForm';
 import styles from './BlogPostDetail.module.css';
 
 const BlogPostDetail = ({ title, content, author, date, onDelete }) => {
   const [showDialog, setShowDialog] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [comments, setComments] = useState([]);
   const { id } = useParams ? useParams() : { id: undefined };
 
   if (!title || !content || !author || !date) {
@@ -25,6 +28,16 @@ const BlogPostDetail = ({ title, content, author, date, onDelete }) => {
       if (onDelete) onDelete();
     }, 800);
   };
+  const handleAddComment = (comment) => {
+    setComments((prev) => [
+      ...prev,
+      {
+        ...comment,
+        date: new Date(),
+        avatar: undefined, // or provide a default avatar URL if desired
+      },
+    ]);
+  };
   return (
     <div className={styles.blogPostDetail}>
       <h1 className={styles.title}>{title}</h1>
@@ -32,21 +45,30 @@ const BlogPostDetail = ({ title, content, author, date, onDelete }) => {
       <p className={styles.date}>Published on {formattedDate}</p>
       <div
         className={styles.content}
-        dangerouslySetInnerHTML={{ __html: content.replace(/<a /g, '<a target="_blank" rel="noopener noreferrer" ') }}
+        dangerouslySetInnerHTML={{
+          __html: content.replace(
+            /<a /g,
+            '<a target="_blank" rel="noopener noreferrer" '
+          ),
+        }}
       />
       {id && (
-        <Link to={`/edit/${id}`} className={styles.editButton} style={{
-          display: 'inline-block',
-          background: '#007BFF',
-          color: '#fff',
-          borderRadius: 4,
-          padding: '10px 20px',
-          fontWeight: 600,
-          fontSize: 16,
-          marginRight: 16,
-          textDecoration: 'none',
-          marginTop: 20,
-        }}>
+        <Link
+          to={`/edit/${id}`}
+          className={styles.editButton}
+          style={{
+            display: 'inline-block',
+            background: '#007BFF',
+            color: '#fff',
+            borderRadius: 4,
+            padding: '10px 20px',
+            fontWeight: 600,
+            fontSize: 16,
+            marginRight: 16,
+            textDecoration: 'none',
+            marginTop: 20,
+          }}
+        >
           Edit
         </Link>
       )}
@@ -57,6 +79,20 @@ const BlogPostDetail = ({ title, content, author, date, onDelete }) => {
         onConfirm={handleDelete}
         loading={deleting}
       />
+      {/* Comment Section */}
+      <section style={{ marginTop: 40 }}>
+        <h2
+          style={{
+            fontSize: '1.3em',
+            color: '#003366',
+            marginBottom: 12,
+          }}
+        >
+          Comments
+        </h2>
+        <CommentList comments={comments} />
+        <CommentForm onSubmit={handleAddComment} isLoggedIn={false} />
+      </section>
     </div>
   );
 };
