@@ -1,0 +1,10 @@
+/* CommentList.module.css */
+.commentList {
+  margin-top: 32px;
+  margin-bottom: 24px;
+}
+.noComments {
+  color: #888;
+  font-style: italic;
+  padding: 12px 0;
+}
