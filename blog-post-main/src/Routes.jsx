@@ -45,8 +45,8 @@ function BlogPostDetailPage({ posts, onDelete }) {
   );
 }
 
-function HomePage({ posts }) {
-  return <BlogPostList posts={posts} />;
+function HomePage({ posts, noResults, searchQuery }) {
+  return <BlogPostList posts={posts} noResults={noResults} searchQuery={searchQuery} />;
 }
 
 function BlogPostCreatePage({ onSubmit }) {

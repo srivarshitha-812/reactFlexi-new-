@@ -40,6 +40,14 @@ const NavBar = () => {
         BlogApp
       </Link>
       <div className={styles.links}>
+        <form className={styles.searchForm} role="search" aria-label="Site search" onSubmit={e => e.preventDefault()} style={{ display: 'flex', alignItems: 'center', marginRight: 12 }}>
+          <input
+            type="text"
+            className={styles.searchInput}
+            placeholder="Search..."
+            aria-label="Search blog posts"
+          />
+        </form>
         <Link to="/" tabIndex={0}>Home</Link>
         <Link to="/blog" tabIndex={0}>Blog</Link>
         <Link to="/about" tabIndex={0}>About</Link>
