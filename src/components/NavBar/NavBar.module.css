@@ -113,6 +113,38 @@
   outline-offset: 2px;
 }
 
+.searchForm {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.searchInput {
+  border: 1px solid #cfd8dc;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 1em;
+  font-family: inherit;
+  outline: none;
+  width: 120px;
+  transition: border 0.2s;
+}
+.searchInput:focus {
+  border: 1.5px solid #3399ff;
+}
+@media (max-width: 900px) {
+  .searchInput {
+    width: 80px;
+    font-size: 0.95em;
+  }
+}
+@media (max-width: 768px) {
+  .searchForm {
+    display: none;
+  }
+}
+
 @media (max-width: 1200px) {
   .navBar {
     padding: 0 16px;

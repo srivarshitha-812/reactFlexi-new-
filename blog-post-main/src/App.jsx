@@ -2,6 +2,8 @@ import React from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { BlogPostDetailPage, HomePage, BlogPostCreatePage, BlogPostEditPage } from './Routes';
 import Layout from '../../src/components/Layout';
+import SearchBar from './components/SearchBar';
+import highlightText from './components/highlightText';
 
 const initialPosts = [
   {
@@ -33,9 +35,25 @@ const initialPosts = [
   }
 ];
 
+
 const App = () => {
   const [posts, setPosts] = React.useState(initialPosts);
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const [filteredPosts, setFilteredPosts] = React.useState(posts);
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (!searchQuery) {
+      setFilteredPosts(posts);
+    } else {
+      const q = searchQuery.trim().toLowerCase();
+      const filtered = posts.filter(post =>
+        post.title.toLowerCase().includes(q) ||
+        (post.content && post.content.toLowerCase().includes(q))
+      );
+      setFilteredPosts(filtered);
+    }
+  }, [searchQuery, posts]);
 
   const handleCreate = (data) => {
     const newId = (posts.length + 1).toString();
@@ -61,8 +79,33 @@ const App = () => {
     navigate('/');
   };
 
+  // Search handler for SearchBar
+  const handleSearch = (query, announceResults) => {
+    setSearchQuery(query);
+    if (announceResults) announceResults(
+      query.trim() ? posts.filter(post =>
+        post.title.toLowerCase().includes(query.trim().toLowerCase()) ||
+        (post.content && post.content.toLowerCase().includes(query.trim().toLowerCase()))
+      ).length : posts.length
+    );
+  };
+
+
+  // Provide a function for Layout to render the SearchBar
+  if (typeof window !== 'undefined') {
+    window.renderSearchBar = () => <SearchBar onSearch={handleSearch} />;
+  }
+
+  // Highlight search term in title and summary
+  const postsToShow = filteredPosts.map(post => ({
+    ...post,
+    title: searchQuery ? highlightText(post.title, searchQuery) : post.title,
+    summary: searchQuery ? highlightText(post.summary || '', searchQuery) : post.summary,
+  }));
+
   return (
     <Layout>
+      <SearchBar onSearch={handleSearch} />
       <h1 style={{ textAlign: 'center' }}>Blog Posts</h1>
       <div style={{ textAlign: 'center', marginBottom: 24 }}>
         <a href="/create" style={{
@@ -77,7 +120,7 @@ const App = () => {
         }}>+ New Post</a>
       </div>
       <Routes>
-        <Route path="/" element={<HomePage posts={posts} />} />
+        <Route path="/" element={<HomePage posts={postsToShow} noResults={postsToShow.length === 0} searchQuery={searchQuery} />} />
         <Route path="/posts/:id" element={<BlogPostDetailPage posts={posts} onDelete={handleDelete} />} />
         <Route path="/create" element={<BlogPostCreatePage onSubmit={handleCreate} />} />
         <Route path="/edit/:id" element={<BlogPostEditPage posts={posts} onSubmit={handleEdit} />} />
